@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -19,23 +21,24 @@ class AuthController extends Controller
         ], $status);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+        $validated = $request->validated();
+
+        Log::info('Register attempt', [
+            'email' => $validated['email'],
         ]);
 
-        if ($validator->fails()) {
-            return $this->errorResponse(
-                $validator->errors()->first(),
-                'VALIDATION_ERROR',
-                400
-            );
-        }
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
 
-        $user = User::create($validator->validated());
+        Log::info('User registered successfully', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
 
         $token = $user->createToken('api-token')->plainTextToken;
 
@@ -45,24 +48,33 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+        $validated = $request->validated();
+
+        Log::info('Login attempt', [
+            'email' => $validated['email'],
         ]);
 
-        if ($validator->fails()) {
-            return $this->errorResponse(
-                $validator->errors()->first(),
-                'VALIDATION_ERROR',
-                400
-            );
+        $user = User::where('email', $validated['email'])->first();
+
+        Log::info('User lookup', [
+            'found' => $user !== null,
+            'user_id' => $user?->id,
+        ]);
+
+        if ($user) {
+            Log::info('Password verification', [
+                'matches' => Hash::check($validated['password'], $user->password),
+                'stored_password_prefix' => substr($user->password, 0, 10),
+            ]);
         }
 
-        $user = User::where('email', $request->email)->first();
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            Log::warning('Login failed', [
+                'email' => $validated['email'],
+            ]);
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
             return $this->errorResponse(
                 'Invalid email or password',
                 'INVALID_CREDENTIALS',
@@ -72,6 +84,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
+        Log::info('Login successful', [
+            'user_id' => $user->id,
+        ]);
+
         return response()->json([
             'user' => $user,
             'token' => $token,
@@ -79,13 +95,23 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request)
-{
-    $token = $request->user()?->currentAccessToken();
+    {
+        $user = $request->user();
 
-    if ($token) {
-        $token->delete();
+        Log::info('Logout attempt', [
+            'user_id' => $user?->id,
+        ]);
+
+        $token = $user?->currentAccessToken();
+
+        if ($token) {
+            $token->delete();
+
+            Log::info('Token deleted', [
+                'user_id' => $user?->id,
+            ]);
+        }
+
+        return response()->noContent();
     }
-
-    return response()->noContent();
-}
 }
