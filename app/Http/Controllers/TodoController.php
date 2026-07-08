@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 
 class TodoController extends Controller
 {
