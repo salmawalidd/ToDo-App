@@ -46,22 +46,9 @@ class TodoController extends Controller
         return response()->json($todos);
     }
 
-    public function store(Request $request)
+    public function store(StoreTodoRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse(
-                $validator->errors()->first(),
-                'VALIDATION_ERROR',
-                400
-            );
-        }
-
-        $validated = $validator->validated();
+        $validated = $request->validated();
 
         $todo = Todo::create([
             'title' => $validated['title'],
@@ -83,7 +70,7 @@ class TodoController extends Controller
         return response()->json($todo);
     }
 
-    public function update(Request $request, int $id)
+    public function update(UpdateTodoRequest $request, int $id)
     {
         $todo = Todo::find($id);
 
@@ -91,21 +78,8 @@ class TodoController extends Controller
             return $this->errorResponse('Todo not found', 'NOT_FOUND', 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'completed' => 'sometimes|boolean',
-        ]);
 
-        if ($validator->fails()) {
-            return $this->errorResponse(
-                $validator->errors()->first(),
-                'VALIDATION_ERROR',
-                400
-            );
-        }
-
-        $todo->update($validator->validated());
+        $todo->update($request->validated());
 
         return response()->json($todo);
     }
