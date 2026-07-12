@@ -1,0 +1,680 @@
+#root {
+  min-height: 100vh;
+}
+
+/* Navigation */
+
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0 8%;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e4e9f2;
+  backdrop-filter: blur(12px);
+}
+
+.nav-brand {
+  color: #172033;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links a {
+  padding: 9px 14px;
+  color: #5e687b;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 9px;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #2457df;
+  background: #edf3ff;
+}
+
+/* Authentication pages */
+
+.auth-page {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding: 48px 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  background: #ffffff;
+  border: 1px solid #e5eaf2;
+  border-radius: 20px;
+  box-shadow:
+    0 20px 50px rgba(23, 32, 51, 0.08),
+    0 4px 12px rgba(23, 32, 51, 0.04);
+}
+
+.auth-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.auth-header h1 {
+  margin: 0 0 10px;
+  color: #172033;
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+
+.auth-header p {
+  margin: 0;
+  color: #7a8497;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.auth-card form {
+  display: grid;
+  gap: 20px;
+}
+
+.form-group {
+  display: grid;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #30394b;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.form-group input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  color: #172033;
+  background: #f9fafc;
+  border: 1px solid #dce2ec;
+  border-radius: 10px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #a1a9b8;
+}
+
+.form-group input:hover {
+  border-color: #b8c2d2;
+}
+
+.form-group input:focus {
+  background: #ffffff;
+  border-color: #3366e8;
+  box-shadow: 0 0 0 4px rgba(51, 102, 232, 0.12);
+}
+
+.auth-submit {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 4px;
+  color: #ffffff;
+  background: #2f63e9;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(47, 99, 233, 0.2);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: #2456da;
+  box-shadow: 0 10px 22px rgba(47, 99, 233, 0.27);
+  transform: translateY(-1px);
+}
+
+.auth-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.auth-footer {
+  margin: 24px 0 0;
+  color: #7a8497;
+  font-size: 14px;
+  text-align: center;
+}
+
+.auth-footer a {
+  color: #2f63e9;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  margin: 0;
+  padding: 11px 13px;
+  color: #b42318;
+  background: #fff1f0;
+  border: 1px solid #ffd5d2;
+  border-radius: 9px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .app-navbar {
+    padding: 0 18px;
+  }
+
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-links a {
+    padding: 8px 9px;
+  }
+
+  .auth-page {
+    padding: 28px 16px;
+  }
+
+  .auth-card {
+    padding: 28px 22px;
+    border-radius: 16px;
+  }
+
+  .auth-header h1 {
+    font-size: 26px;
+  }
+}
+/* Todo page */
+
+.todos-page {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 56px 0 80px;
+}
+
+.todos-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 34px;
+}
+
+.todos-header h1 {
+  margin: 4px 0 8px;
+  color: #172033;
+  font-size: clamp(34px, 5vw, 48px);
+  letter-spacing: -1.5px;
+}
+
+.todos-header p {
+  max-width: 600px;
+  margin: 0;
+  color: #7a8497;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  color: #2f63e9 !important;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.todo-summary {
+  min-width: 140px;
+  padding: 18px 22px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e4e9f2;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.05);
+}
+
+.todo-summary strong {
+  display: block;
+  color: #2f63e9;
+  font-size: 28px;
+}
+
+.todo-summary span {
+  color: #7a8497;
+  font-size: 13px;
+}
+
+.todo-create-card,
+.todo-list-card {
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #e4e9f2;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(23, 32, 51, 0.06);
+}
+
+.todo-create-card {
+  margin-bottom: 26px;
+}
+
+.section-heading {
+  margin-bottom: 24px;
+}
+
+.section-heading h2,
+.todo-toolbar h2 {
+  margin: 0 0 5px;
+  color: #172033;
+  font-size: 21px;
+}
+
+.section-heading p,
+.todo-toolbar p {
+  margin: 0;
+  color: #8a93a5;
+  font-size: 14px;
+}
+
+.todo-form {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.todo-form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: #172033;
+  background: #f9fafc;
+  border: 1px solid #dce2ec;
+  border-radius: 10px;
+  outline: none;
+  resize: vertical;
+}
+
+.todo-form textarea:focus {
+  background: #ffffff;
+  border-color: #3366e8;
+  box-shadow: 0 0 0 4px rgba(51, 102, 232, 0.12);
+}
+
+.optional-label {
+  margin-left: 7px;
+  color: #9ca5b5;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.primary-button {
+  min-height: 48px;
+  padding: 0 22px;
+  color: #ffffff;
+  background: #2f63e9;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #2456da;
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.todo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.todo-filters {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: #f2f5fa;
+  border-radius: 10px;
+}
+
+.todo-filters button {
+  padding: 8px 13px;
+  color: #727d90;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.todo-filters button.active {
+  color: #2457df;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(23, 32, 51, 0.08);
+}
+
+.todo-list {
+  display: grid;
+}
+
+.todo-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 4px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-checkbox {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #ffffff;
+  background: #ffffff;
+  border: 2px solid #cbd3df;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.todo-completed .todo-checkbox {
+  background: #2f63e9;
+  border-color: #2f63e9;
+}
+
+.todo-content h3 {
+  margin: 0 0 5px;
+  color: #263044;
+  font-size: 16px;
+}
+
+.todo-content p {
+  margin: 0 0 8px;
+  color: #7a8497;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.todo-completed .todo-content h3 {
+  color: #9aa3b2;
+  text-decoration: line-through;
+}
+
+.todo-date {
+  color: #a2aab8;
+  font-size: 12px;
+}
+
+.delete-button {
+  padding: 8px 12px;
+  color: #c43c36;
+  background: #fff4f3;
+  border: 1px solid #ffd9d6;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: #ffe9e7;
+}
+
+.delete-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.todo-empty-state {
+  display: grid;
+  justify-items: center;
+  padding: 64px 20px 40px;
+  text-align: center;
+}
+
+.todo-empty-state h3 {
+  margin: 14px 0 7px;
+  color: #30394b;
+}
+
+.todo-empty-state p {
+  margin: 0;
+  color: #8a93a5;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  color: #2f63e9;
+  background: #edf3ff;
+  border-radius: 14px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+@media (max-width: 850px) {
+  .todo-form {
+    grid-template-columns: 1fr;
+  }
+
+  .primary-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+  .todos-page {
+    width: min(100% - 24px, 1100px);
+    padding-top: 34px;
+  }
+
+  .todos-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .todo-summary {
+    width: 100%;
+  }
+
+  .todo-create-card,
+  .todo-list-card {
+    padding: 22px 18px;
+  }
+
+  .todo-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .todo-filters {
+    width: 100%;
+  }
+
+  .todo-filters button {
+    flex: 1;
+  }
+
+  .todo-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .delete-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+.todo-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-button {
+  padding: 8px 12px;
+  color: #2457df;
+  background: #edf3ff;
+  border: 1px solid #d7e4ff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.edit-button:hover {
+  background: #e2ecff;
+}
+
+.todo-edit-form {
+  display: grid;
+  gap: 14px;
+}
+
+.todo-edit-form input,
+.todo-edit-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: #172033;
+  background: #f9fafc;
+  border: 1px solid #dce2ec;
+  border-radius: 9px;
+  outline: none;
+  resize: vertical;
+}
+
+.todo-edit-form input:focus,
+.todo-edit-form textarea:focus {
+  background: #ffffff;
+  border-color: #3366e8;
+  box-shadow: 0 0 0 4px rgba(51, 102, 232, 0.12);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.save-button {
+  color: #ffffff;
+  background: #2f63e9;
+  border: 1px solid #2f63e9;
+}
+
+.save-button:hover:not(:disabled) {
+  background: #2456da;
+}
+
+.cancel-button {
+  color: #596579;
+  background: #ffffff;
+  border: 1px solid #dce2ec;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #f5f7fa;
+}
+
+.save-button:disabled,
+.cancel-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 650px) {
+  .todo-actions {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+.nav-user {
+  padding: 9px 12px;
+  color: #30394b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nav-logout {
+  padding: 9px 14px;
+  color: #c43c36;
+  background: #fff4f3;
+  border: 1px solid #ffd9d6;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nav-logout:hover {
+  background: #ffe9e7;
+}
+.forgot-password-link {
+  margin-top: -8px;
+  text-align: right;
+}
+
+.forgot-password-link a {
+  color: #2f63e9;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
