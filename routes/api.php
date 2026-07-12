@@ -8,13 +8,15 @@ use App\Http\Controllers\UserController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/todos', [TodoController::class, 'index']);
-    Route::post('/todos', [TodoController::class, 'store']);
-    Route::get('/todos/{id}', [TodoController::class, 'show']);
-    Route::patch('/todos/{id}', [TodoController::class, 'update']);
-    Route::delete('/todos/{id}', [TodoController::class, 'destroy']);
+// Public todo routes
+Route::get('/todos', [TodoController::class, 'index']);
+Route::post('/todos', [TodoController::class, 'store']);
+Route::get('/todos/{id}', [TodoController::class, 'show']);
+Route::patch('/todos/{id}', [TodoController::class, 'update']);
+Route::delete('/todos/{id}', [TodoController::class, 'destroy']);
 
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
