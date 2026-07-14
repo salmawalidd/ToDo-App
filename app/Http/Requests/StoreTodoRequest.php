@@ -8,7 +8,7 @@ class StoreTodoRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create todos');
     }
 
     public function rules(): array

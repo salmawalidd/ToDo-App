@@ -28,7 +28,9 @@ function RegisterPage() {
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(
+        "Password must be at least 6 characters."
+      );
       return;
     }
 
@@ -43,9 +45,16 @@ function RegisterPage() {
       });
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
 
-      navigate("/todos");
+      const isAdmin =
+        data.user.roles.includes("admin") ||
+        data.user.roles.includes("super-admin");
+
+      navigate(isAdmin ? "/admin" : "/todos");
     } catch (error) {
       setError(
         error instanceof Error
@@ -62,6 +71,7 @@ function RegisterPage() {
       <section className="auth-card">
         <div className="auth-header">
           <h1>Create Account</h1>
+
           <p>
             Register to start managing your todos.
           </p>
@@ -69,7 +79,9 @@ function RegisterPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">
+              Name
+            </label>
 
             <input
               id="name"
@@ -84,7 +96,9 @@ function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">
+              Email
+            </label>
 
             <input
               id="email"
@@ -134,7 +148,9 @@ function RegisterPage() {
 
         <p className="auth-footer">
           Already have an account?{" "}
-          <Link to="/login">Sign in</Link>
+          <Link to="/login">
+            Sign in
+          </Link>
         </p>
       </section>
     </main>

@@ -1,0 +1,5 @@
+[33m4335be2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfrontend[m[33m)[m Add React frontend and implement Spatie roles & permissions
+[33mda9b4fd[m[33m ([m[1;31morigin/revamp/validation[m[33m, [m[1;32mrevamp/validation[m[33m)[m refactor: replace manual validation with form request in store and update methods
+[33m41e0035[m add logs to track login state
+[33m3977565[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #1 from salmawalidd/revamp/auth
+[33me5215bf[m[33m ([m[1;31morigin/revamp/auth[m[33m, [m[1;32mrevamp/auth[m[33m)[m Implement user soft deletes and enhance seeding with Todo and User seeders

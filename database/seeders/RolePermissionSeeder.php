@@ -20,7 +20,7 @@ class RolePermissionSeeder extends Seeder
             'update todos',
             'delete todos',
             'manage users',
-             'delete users',
+            'delete users',
         ];
 
         foreach ($permissions as $permissionName) {
@@ -40,6 +40,11 @@ class RolePermissionSeeder extends Seeder
             'guard_name' => 'web',
         ]);
 
+        $superAdminRole = Role::updateOrCreate([
+            'name' => 'super-admin',
+            'guard_name' => 'web',
+        ]);
+
         $userRole->syncPermissions([
             'view todos',
             'create todos',
@@ -47,7 +52,15 @@ class RolePermissionSeeder extends Seeder
             'delete todos',
         ]);
 
-        $adminRole->syncPermissions($permissions);
+        $adminRole->syncPermissions([
+            'view todos',
+            'create todos',
+            'update todos',
+            'delete todos',
+            'manage users',
+        ]);
+
+        $superAdminRole->syncPermissions($permissions);
 
         app(PermissionRegistrar::class)
             ->forgetCachedPermissions();

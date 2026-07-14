@@ -11,16 +11,39 @@ interface ApiErrorResponse {
     message?: string;
     code?: string;
   };
+  message?: string;
 }
 
-async function readJsonResponse<T>(response: Response): Promise<T> {
-  const data = await response.json();
+function getToken(): string {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("You are not authenticated.");
+  }
+
+  return token;
+}
+
+async function readJsonResponse<T>(
+  response: Response
+): Promise<T> {
+  const contentType = response.headers.get(
+    "content-type"
+  );
+
+  let data: unknown = null;
+
+  if (contentType?.includes("application/json")) {
+    data = await response.json();
+  }
 
   if (!response.ok) {
-    const errorData = data as ApiErrorResponse;
+    const errorData = data as ApiErrorResponse | null;
 
     throw new Error(
-      errorData.error?.message || "Something went wrong."
+      errorData?.error?.message ||
+        errorData?.message ||
+        `Request failed with status ${response.status}.`
     );
   }
 
@@ -40,6 +63,7 @@ export async function getTodos(
     {
       headers: {
         Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
@@ -55,6 +79,7 @@ export async function createTodo(
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(todoData),
   });
@@ -73,6 +98,7 @@ export async function updateTodo(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
       body: JSON.stringify(todoData),
     }
@@ -90,6 +116,7 @@ export async function deleteTodo(
       method: "DELETE",
       headers: {
         Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
@@ -98,14 +125,5 @@ export async function deleteTodo(
     return;
   }
 
-  let message = "Failed to delete todo.";
-
-  try {
-    const data = (await response.json()) as ApiErrorResponse;
-    message = data.error?.message || message;
-  } catch {
-    // The response did not contain JSON.
-  }
-
-  throw new Error(message);
+  await readJsonResponse<unknown>(response);
 }
