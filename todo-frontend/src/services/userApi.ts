@@ -3,7 +3,25 @@ export interface AdminUser {
   name: string;
   email: string;
   roles: string[];
+  direct_permissions: string[];
+  permissions: string[];
   created_at: string;
+  updated_at?: string;
+}
+
+export interface AccessOptions {
+  roles: string[];
+  permissions: string[];
+}
+
+export interface UpdateUserAccessData {
+  roles: string[];
+  permissions: string[];
+}
+
+interface UpdateUserAccessResponse {
+  message: string;
+  user: AdminUser;
 }
 
 interface ApiErrorResponse {
@@ -61,6 +79,43 @@ export async function getUsers(): Promise<AdminUser[]> {
   });
 
   return readJson<AdminUser[]>(response);
+}
+
+export async function getAccessOptions(): Promise<AccessOptions> {
+  const response = await fetch(
+    `${API_URL}/roles-permissions`,
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  );
+
+  return readJson<AccessOptions>(response);
+}
+
+export async function updateUserAccess(
+  userId: number,
+  accessData: UpdateUserAccessData
+): Promise<AdminUser> {
+  const response = await fetch(
+    `${API_URL}/users/${userId}/access`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      body: JSON.stringify(accessData),
+    }
+  );
+
+  const data =
+    await readJson<UpdateUserAccessResponse>(response);
+
+  return data.user;
 }
 
 export async function deleteUser(
