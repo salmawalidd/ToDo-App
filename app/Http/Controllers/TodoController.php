@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Todo;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TodoController extends Controller
 {
-    private function errorResponse(string $message, string $code, int $status)
-    {
+    private function errorResponse(
+        string $message,
+        string $code,
+        int $status
+    ): JsonResponse {
         return response()->json([
             'error' => [
                 'message' => $message,
                 'code' => $code,
-            ]
+            ],
         ], $status);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $query = Todo::orderBy('created_at', 'desc');
+        $query = $request->user()
+            ->todos()
+            ->orderBy('created_at', 'desc');
 
         if ($request->has('completed')) {
             $completed = filter_var(
@@ -46,50 +52,77 @@ class TodoController extends Controller
         return response()->json($todos);
     }
 
-    public function store(StoreTodoRequest $request)
-    {
+    public function store(
+        StoreTodoRequest $request
+    ): JsonResponse {
         $validated = $request->validated();
 
-        $todo = Todo::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'] ?? null,
-            'completed' => false,
-        ]);
+        $todo = $request->user()
+            ->todos()
+            ->create([
+                'title' => $validated['title'],
+                'description' =>
+                    $validated['description'] ?? null,
+                'completed' => false,
+            ]);
 
         return response()->json($todo, 201);
     }
 
-    public function show(int $id)
-    {
-        $todo = Todo::find($id);
+    public function show(
+        Request $request,
+        int $id
+    ): JsonResponse {
+        $todo = $request->user()
+            ->todos()
+            ->find($id);
 
         if (!$todo) {
-            return $this->errorResponse('Todo not found', 'NOT_FOUND', 404);
+            return $this->errorResponse(
+                'Todo not found',
+                'NOT_FOUND',
+                404
+            );
         }
 
         return response()->json($todo);
     }
 
-    public function update(UpdateTodoRequest $request, int $id)
-    {
-        $todo = Todo::find($id);
+    public function update(
+        UpdateTodoRequest $request,
+        int $id
+    ): JsonResponse {
+        $todo = $request->user()
+            ->todos()
+            ->find($id);
 
         if (!$todo) {
-            return $this->errorResponse('Todo not found', 'NOT_FOUND', 404);
+            return $this->errorResponse(
+                'Todo not found',
+                'NOT_FOUND',
+                404
+            );
         }
-
 
         $todo->update($request->validated());
 
         return response()->json($todo);
     }
 
-    public function destroy(int $id)
-    {
-        $todo = Todo::find($id);
+    public function destroy(
+        Request $request,
+        int $id
+    ): JsonResponse|Response {
+        $todo = $request->user()
+            ->todos()
+            ->find($id);
 
         if (!$todo) {
-            return $this->errorResponse('Todo not found', 'NOT_FOUND', 404);
+            return $this->errorResponse(
+                'Todo not found',
+                'NOT_FOUND',
+                404
+            );
         }
 
         $todo->delete();

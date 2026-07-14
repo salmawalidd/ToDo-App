@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { login } from "../services/authApi";
 
 function LoginPage() {
@@ -44,7 +45,11 @@ function LoginPage() {
         JSON.stringify(data.user)
       );
 
-      navigate("/todos");
+      const isAdmin =
+        data.user.roles.includes("admin") ||
+        data.user.roles.includes("super-admin");
+
+      navigate(isAdmin ? "/admin" : "/todos");
     } catch (error) {
       setError(
         error instanceof Error
@@ -61,6 +66,7 @@ function LoginPage() {
       <section className="auth-card">
         <div className="auth-header">
           <h1>Welcome back</h1>
+
           <p>
             Sign in to continue managing your tasks.
           </p>

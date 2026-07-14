@@ -4,8 +4,10 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  created_at: string;
-  updated_at: string;
+  roles: string[];
+  permissions: string[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface RegisterData {
@@ -36,12 +38,16 @@ interface ApiErrorResponse {
   message?: string;
 }
 
-async function readResponse<T>(response: Response): Promise<T> {
+async function readResponse<T>(
+  response: Response
+): Promise<T> {
   if (response.status === 204) {
     return undefined as T;
   }
 
-  const contentType = response.headers.get("content-type");
+  const contentType = response.headers.get(
+    "content-type"
+  );
 
   let data: unknown = null;
 
