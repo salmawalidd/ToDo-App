@@ -52,4 +52,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->middleware('permission:delete users');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Role and permission management routes
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/roles-permissions',
+        [UserController::class, 'accessOptions']
+    )->middleware(
+        'permission:manage roles and permissions'
+    );
+
+    Route::patch(
+        '/users/{id}/access',
+        [UserController::class, 'updateAccess']
+    )->middleware(
+        'permission:manage roles and permissions'
+    );
 });
